@@ -173,3 +173,5 @@ cython_debug/
 # My custom ignores
 /bin
 /tmp
+src/runThis2Build.bat
+/output
