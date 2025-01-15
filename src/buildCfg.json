@@ -52,6 +52,14 @@
   {
    "optionDest": "datas",
    "value": "./src/googletrans-4.0.2-py3-none-any.whl;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "./src/opencv_python-4.10.0.84-cp37-abi3-win32.whl;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "./src/requests-2.32.3-py3-none-any.whl;."
   }
  ],
  "nonPyinstallerOptions": {
