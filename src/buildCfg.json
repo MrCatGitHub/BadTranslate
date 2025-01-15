@@ -51,7 +51,7 @@
   },
   {
    "optionDest": "datas",
-   "value": "F:/files/code/BadTranslate/src/googletrans-4.0.2-py3-none-any.whl;."
+   "value": "./src/googletrans-4.0.2-py3-none-any.whl;."
   }
  ],
  "nonPyinstallerOptions": {
