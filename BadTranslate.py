@@ -70,16 +70,14 @@ async def translate_text(text, iterations):
 
 def main():
     input_text = input("Enter the text you want to translate: ")
-    iterations = int(input("Amount of iterations: (Default: 100) "))
-    if not any(char.isdigit() for char in iterations):
-        err1()
-    if iterations == "":
-        iterations == 100
+    iterations = input("Amount of iterations: (Default: 100) ")
+    if not iterations.strip():
+        iterations = 100
+    else:
+        iterations = int(iterations)
     translated_text = asyncio.run(translate_text(input_text, iterations))
     print("Original text:", input_text)
     print("Translated text:", translated_text)
-def err1():
-    input('Error 1: Unexpected String. Press "Enter" to exit')
 
     root = Tk()
     root.withdraw()
@@ -88,6 +86,9 @@ def err1():
     root.update()
     root.destroy()
     print("Copied result to clipboard.")
+
+def err1():
+    input('Error 1: Unexpected String. Press "Enter" to exit')
 
 if __name__ == "__main__":
     main()
