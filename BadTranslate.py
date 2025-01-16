@@ -9,7 +9,7 @@ from googletrans import Translator, LANGUAGES
 from tkinter import Tk
 import asyncio
 
-ver = "0.0.3-alpha.1"
+ver = "0.0.3-alpha.2"
 def unknownErr():
     print("Error 004: An unknown error ocurred")
 url = "https://github.com/MrCatGitHub/BadTranslate/releases/latest"
@@ -35,16 +35,18 @@ try:
     else:
         ret = 0
 except InvalidVersion as e:
-    print(f"Error 003: Failed to parse version: {e}")
+    print(f"Error 003: Failed to parse: {e}")
     ret = ("")
 
+def checkLangCode(lang2):
+    return lang2 in LANGUAGES
     
 if ret == 1:
-    print(f"Outdated version! Pleas update at github.com/MrCatGitHub/BadTranslate/releases/latest")
+    print(f"Outdated version! Please update at github.com/MrCatGitHub/BadTranslate/releases/latest ({ver} < {ghVer})")
 elif ret == -1:
-    print("You are running a version from the future. You're either a developer, or something messed up big time.")
+    print(f"You are running a version from the future. You're either a developer, or something messed up big time. ({ver} > {ghVer})")
 elif ret == 2:
-    print("You are running the latest version!")
+    print(f"You are running the latest version! ({ver})")
 elif ret == 0:
     unknownErr()
 else:
@@ -53,23 +55,40 @@ def random_language_code():
     languages = list(LANGUAGES.keys())
     return random.choice(languages)
 
-async def translate_text(text, iterations):
+async def translate_text(text, iterations, langCode):
     translator = Translator()
     translated = text
     for i in range(iterations):
         try:
             lang_code = random_language_code()
-            random_trans = await translator.translate(translated, dest=lang_code)
-            eng_trans = await translator.translate(random_trans.text, dest='en')
-            translated = eng_trans.text
+            randomTrans = await translator.translate(translated, dest=lang_code)
+            engTrans = await translator.translate(randomTrans.text, dest=langCode)
+            translated = engTrans.text
             print(f"Iteration {i + 1}/{iterations}: {translated}")
         except Exception as e:
             print(f"Error during translation at iteration {i + 1}: {e}")
         time.sleep(1)
     return translated
 
+#def detect(text):
+#    translator = Translator()
+#    try:
+#        if asyncio.iscoroutinefunction(translator.detect):
+#            result = translator.detect(text)
+#        else:
+#            result = translator.detect, text
+#        return result
+#    except Exception as e:
+#        print(f"Error: {e}")
+#        return None
+
 def main():
-    input_text = input("Enter the text you want to translate: ")
+    inputText = input("Enter the text you want to translate: ").strip()
+    if not inputText:
+        print("Error 003: Failed to parse")
+    langCode = input("Please select the destination language using short language codes: ").lower().strip()
+    if checkLangCode(langCode):
+        print (f'Language code "{langCode}" is detected as {LANGUAGES[langCode]}')
     iterations = input("Amount of iterations: (Default: 100) ")
     if not iterations.strip():
         iterations = 100
@@ -81,8 +100,8 @@ def main():
         print("An extremely high number of iterations has been selected; this might take 15 minutes or more.")
     elif iterations <= 0:
         print("You've selected 0 or fewer iterations; nothing will happen.")
-    translated_text = asyncio.run(translate_text(input_text, iterations))
-    print("Original text:", input_text)
+    translated_text = asyncio.run(translate_text(inputText, iterations, langCode))
+    print("Original text:", inputText)
     print("Translated text:", translated_text)
 
     root = Tk()

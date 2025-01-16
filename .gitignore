@@ -175,3 +175,4 @@ cython_debug/
 /tmp
 src/runThis2Build.bat
 /output
+/.vs
