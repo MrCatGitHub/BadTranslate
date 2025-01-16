@@ -75,6 +75,12 @@ def main():
         iterations = 100
     else:
         iterations = int(iterations)
+    if iterations >= 250:
+        print("A high number of iterations has been selected; this might take a long time.")
+    elif iterations >= 1000:
+        print("An extremely high number of iterations has been selected; this might take 15 minutes or more.")
+    elif iterations <= 0:
+        print("You've selected 0 or fewer iterations; nothing will happen.")
     translated_text = asyncio.run(translate_text(input_text, iterations))
     print("Original text:", input_text)
     print("Translated text:", translated_text)
