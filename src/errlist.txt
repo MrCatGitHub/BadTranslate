@@ -1,0 +1,6 @@
+possible causes for Errors:
+
+- Error 1: you typed something that messed up something
+- Error 2: couldnt check the version. check your internet
+- Error 3: same as 1 but it isnt your fault
+- Error 4: idk

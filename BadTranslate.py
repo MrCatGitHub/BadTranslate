@@ -10,9 +10,18 @@ from tkinter import Tk
 import asyncio
 
 ver = "0.0.3-alpha.2"
-def unknownErr():
-    print("Error 004: An unknown error ocurred")
+exiting = 0
+fallback = "en"
 url = "https://github.com/MrCatGitHub/BadTranslate/releases/latest"
+
+def unknownErr():
+    print("Error 4: An unknown error ocurred")
+def err1(q):
+    if q == 0:
+        print('Error 1: Unexpected String.')
+    elif q == 1:
+        input('Error 1: Unexpected String. Press "Enter" to exit.')
+
 try:
     response = requests.get(url, allow_redirects=False)
     urlHead = response.headers.get("Location")
@@ -20,9 +29,9 @@ try:
         ghVer = urlHead.rsplit("/", 1)[-1]
         ret = ghVer
     else:
-        print("Error 002: Could not find version")
+        print("Error 2: Could not find version")
 except requests.RequestException as e:
-    print (f"Error: {e}")
+    print(f"Error: {e}")
 ghVer = ghVer.lstrip("v")
 ver = ver.lstrip("v")
 try:
@@ -35,11 +44,11 @@ try:
     else:
         ret = 0
 except InvalidVersion as e:
-    print(f"Error 003: Failed to parse: {e}")
+    print(f"Error 3: Failed to parse: {e}")
     ret = ("")
 
-def checkLangCode(lang2):
-    return lang2 in LANGUAGES
+def checkLangCode(lang):
+    return lang in LANGUAGES
     
 if ret == 1:
     print(f"Outdated version! Please update at github.com/MrCatGitHub/BadTranslate/releases/latest ({ver} < {ghVer})")
@@ -48,7 +57,7 @@ elif ret == -1:
 elif ret == 2:
     print(f"You are running the latest version! ({ver})")
 elif ret == 0:
-    unknownErr()
+    unknownErr
 else:
     print("")
 def random_language_code():
@@ -85,19 +94,29 @@ async def translate_text(text, iterations, langCode):
 def main():
     inputText = input("Enter the text you want to translate: ").strip()
     if not inputText:
-        print("Error 003: Failed to parse")
+        err1()
     langCode = input("Please select the destination language using short language codes: ").lower().strip()
+    if langCode == "0":
+        print("no.")
+        langCode = fallback
     if checkLangCode(langCode):
-        print (f'Language code "{langCode}" is detected as {LANGUAGES[langCode]}')
-    iterations = input("Amount of iterations: (Default: 100) ")
+        print(f'Language code "{langCode}" is detected as {LANGUAGES[langCode]}')
+    else:
+        print(f'Language code "{langCode}" is not valid.')
+        print('Triggering fallback.')
+        langCode = fallback
+    iterations = input("Amount of iterations: (Default: 100) ")    
     if not iterations.strip():
         iterations = 100
-    else:
+    if iterations.isdigit():
         iterations = int(iterations)
-    if iterations >= 250:
-        print("A high number of iterations has been selected; this might take a long time.")
-    elif iterations >= 1000:
+    elif not iterations.isdigit(): #                                           I don’t care that this is technically not an integer;
+        print(f'"{iterations}" is not an integer. Setting iterations to 100.')#it’s integer enough for me.
+        iterations = 100
+    if iterations >= 1000:
         print("An extremely high number of iterations has been selected; this might take 15 minutes or more.")
+    elif iterations >= 250:
+        print("A high number of iterations has been selected; this might take a long time.")
     elif iterations <= 0:
         print("You've selected 0 or fewer iterations; nothing will happen.")
     translated_text = asyncio.run(translate_text(inputText, iterations, langCode))
@@ -105,24 +124,23 @@ def main():
     print("Translated text:", translated_text)
 
     root = Tk()
-    root.withdraw()
-    root.clipboard_clear()
+    root.withdraw
+    root.clipboard_clear
     root.clipboard_append(translated_text)
-    root.update()
-    root.destroy()
+    root.update
+    root.destroy
     print("Copied result to clipboard.")
 
-def err1():
-    input('Error 1: Unexpected String. Press "Enter" to exit')
-
-if __name__ == "__main__":
-    main()
-    yn = input('Done. Try another word? (y/n) ')
-    if yn == 'y':
+def launcher():
+    if __name__ == "__main__":
         main()
-    elif yn == 'n':
-        print ('Exiting now...')
-        raise SystemExit()
-    else:
-        err1()
-
+        yn = input('Done. Try another word? (y/n) ')
+        if yn == 'y':
+            launcher()
+        elif yn == 'n':
+            print('Exiting now...')
+            raise SystemExit
+        else:
+            exiting = 1
+            err1(exiting)
+launcher()
