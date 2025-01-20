@@ -140,7 +140,7 @@ def launcher():
         elif yn == 'n':
             print('Exiting now...')
             if ret == -1:
-                print("Now get back in your DeLorean")
+                print("Now get back in your DeLorean") #Back to the future reference hehe
             raise SystemExit
         else:
             exiting = 1
