@@ -110,8 +110,8 @@ def main():
         iterations = 100
     elif iterations.isdigit():
         iterations = int(iterations)
-    elif not iterations.isdigit(): #                                           I don’t care that this is technically not an integer;
-        print(f'"{iterations}" is not an integer. Setting iterations to 100.')#it’s integer enough for me.
+    elif not iterations.isdigit(): #                                           I don't care that this is technically not an integer;
+        print(f'"{iterations}" is not an integer. Setting iterations to 100.')#it's integer enough for me.
         iterations = 100
     if iterations >= 1000:
         print("An extremely high number of iterations has been selected; this might take 15 minutes or more.")
