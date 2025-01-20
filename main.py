@@ -18,7 +18,7 @@ def unknownErr():
     print("Error 4: An unknown error ocurred")
 def err1(q):
     if q == 0:
-        print('Error 1: Unexpected String.')
+        input('Error 1: Unexpected String.')
     elif q == 1:
         input('Error 1: Unexpected String. Press "Enter" to exit.')
 
@@ -71,8 +71,8 @@ async def translate_text(text, iterations, langCode):
         try:
             lang_code = random_language_code()
             randomTrans = await translator.translate(translated, dest=lang_code)
-            engTrans = await translator.translate(randomTrans.text, dest=langCode)
-            translated = engTrans.text
+            resultTrans = await translator.translate(randomTrans.text, dest=langCode)
+            translated = resultTrans.text
             print(f"Iteration {i + 1}/{iterations}: {translated}")
         except Exception as e:
             print(f"Error during translation at iteration {i + 1}: {e}")
@@ -92,23 +92,23 @@ async def translate_text(text, iterations, langCode):
 #        return None
 
 def main():
-    inputText = input("Enter the text you want to translate: ").strip()
-    if not inputText:
-        err1()
     langCode = input("Please select the destination language using short language codes: ").lower().strip()
-    if langCode == "0":
-        print("no.")
-        langCode = fallback
     if checkLangCode(langCode):
         print(f'Language code "{langCode}" is detected as {LANGUAGES[langCode]}')
     else:
         print(f'Language code "{langCode}" is not valid.')
         print('Triggering fallback.')
         langCode = fallback
+    inputText = input("Enter the text you want to translate: ").strip()
+    if not inputText:
+        err1(1)
+    if langCode == "0":
+        print("no.")
+        langCode = fallback
     iterations = input("Amount of iterations: (Default: 100) ")    
     if not iterations.strip():
         iterations = 100
-    if iterations.isdigit():
+    elif iterations.isdigit():
         iterations = int(iterations)
     elif not iterations.isdigit(): #                                           I don’t care that this is technically not an integer;
         print(f'"{iterations}" is not an integer. Setting iterations to 100.')#it’s integer enough for me.
@@ -143,6 +143,5 @@ def launcher():
                 print("Now get back in your DeLorean") #Back to the future reference hehe
             raise SystemExit
         else:
-            exiting = 1
-            err1(exiting)
+            err1(1)
 launcher()
