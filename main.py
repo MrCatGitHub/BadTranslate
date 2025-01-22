@@ -92,6 +92,9 @@ async def translate_text(text, iterations, langCode):
 #        return None
 
 def main():
+    inputText = input("Enter the text you want to translate: ").strip()
+    if not inputText:
+        err1(1)
     langCode = input("Please select the destination language using short language codes: ").lower().strip()
     if checkLangCode(langCode):
         print(f'Language code "{langCode}" is detected as {LANGUAGES[langCode]}')
@@ -99,9 +102,6 @@ def main():
         print(f'Language code "{langCode}" is not valid.')
         print('Triggering fallback.')
         langCode = fallback
-    inputText = input("Enter the text you want to translate: ").strip()
-    if not inputText:
-        err1(1)
     if langCode == "0":
         print("no.")
         langCode = fallback
