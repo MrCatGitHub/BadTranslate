@@ -124,11 +124,11 @@ def main():
     print("Translated text:", translated_text)
 
     root = Tk()
-    root.withdraw
-    root.clipboard_clear
+    root.withdraw()
+    root.clipboard_clear()
     root.clipboard_append(translated_text)
-    root.update
-    root.destroy
+    root.update()
+    root.destroy()
     print("Copied result to clipboard.")
 
 def launcher():
