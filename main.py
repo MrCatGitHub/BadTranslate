@@ -9,10 +9,9 @@ from googletrans import Translator, LANGUAGES
 from tkinter import Tk
 import asyncio
 
-ver = "0.0.3-alpha.2"
+ver = "0.0.3-alpha.3"
 exiting = 0
 fallback = "en"
-url = "https://github.com/MrCatGitHub/BadTranslate/releases/latest"
 
 def unknownErr():
     print("Error 4: An unknown error ocurred")
@@ -23,7 +22,7 @@ def err1(q):
         input('Error 1: Unexpected String. Press "Enter" to exit.')
 
 try:
-    response = requests.get(url, allow_redirects=False)
+    response = requests.get("https://github.com/MrCatGitHub/BadTranslate/releases/latest", allow_redirects=False)
     urlHead = response.headers.get("Location")
     if urlHead:
         ghVer = urlHead.rsplit("/", 1)[-1]
@@ -105,7 +104,7 @@ def main():
     if langCode == "0":
         print("no.")
         langCode = fallback
-    iterations = input("Amount of iterations: (Default: 100) ")    
+    iterations = input("Amount of iterations: (Default: 100) ").strip()
     if not iterations.strip():
         iterations = 100
     elif iterations.isdigit():
