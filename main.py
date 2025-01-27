@@ -1,9 +1,6 @@
-import re
-from shutil import get_archive_formats
-from packaging.version import Version, InvalidVersion
+from packaging.version import InvalidVersion
 import random
 import time
-from cv2 import checkRange
 import requests
 from googletrans import Translator, LANGUAGES
 from tkinter import Tk
@@ -78,18 +75,6 @@ async def translate_text(text, iterations, langCode):
         time.sleep(1)
     return translated
 
-#def detect(text):
-#    translator = Translator()
-#    try:
-#        if asyncio.iscoroutinefunction(translator.detect):
-#            result = translator.detect(text)
-#        else:
-#            result = translator.detect, text
-#        return result
-#    except Exception as e:
-#        print(f"Error: {e}")
-#        return None
-
 def main():
     inputText = input("Enter the text you want to translate: ").strip()
     if not inputText:
@@ -97,6 +82,9 @@ def main():
     langCode = input("Please select the destination language using short language codes: ").lower().strip()
     if checkLangCode(langCode):
         print(f'Language code "{langCode}" is detected as {LANGUAGES[langCode]}')
+    elif langCode == "":
+        langCode = "en"
+        print("Set language to english.")
     else:
         print(f'Language code "{langCode}" is not valid.')
         print('Triggering fallback.')
