@@ -176,3 +176,4 @@ cython_debug/
 src/runThis2Build.bat
 /output
 /.vs
+*.cmd

@@ -1,3 +1,4 @@
+from os import name
 from packaging.version import InvalidVersion
 import random
 import time
@@ -5,10 +6,16 @@ import requests
 from googletrans import Translator, LANGUAGES
 from tkinter import Tk
 import asyncio
+import argparse
+from tqdm import tqdm
 
 ver = "0.0.3-alpha.3"
 exiting = 0
 fallback = "en"
+
+cli = argparse.ArgumentParser(description="BadTranslate CLI")
+cli.add_argument("-s", "--simple", action="store_true", help="Use the simple mode")
+args = cli.parse_args()
 
 def unknownErr():
     print("Error 4: An unknown error ocurred")
@@ -60,7 +67,7 @@ def random_language_code():
     languages = list(LANGUAGES.keys())
     return random.choice(languages)
 
-async def translate_text(text, iterations, langCode):
+async def translateText(text, iterations, langCode):
     translator = Translator()
     translated = text
     for i in range(iterations):
@@ -74,6 +81,17 @@ async def translate_text(text, iterations, langCode):
             print(f"Error during translation at iteration {i + 1}: {e}")
         time.sleep(1)
     return translated
+async def translateTextSimple(text, iterations, langCode):
+    translator = Translator()
+    translated = text
+    for i in tqdm(range(iterations), desc="Translating"):
+        try:
+            lang_code = random_language_code()
+            randomTrans = await translator.translate(translated, dest=lang_code)
+            resultTrans = await translator.translate(randomTrans.text, dest=langCode)
+            translated = resultTrans.text
+        except:
+            print("Something went wrong... =(")
 
 def main():
     inputText = input("Enter the text you want to translate: ").strip()
@@ -106,7 +124,10 @@ def main():
         print("A high number of iterations has been selected; this might take a long time.")
     elif iterations <= 0:
         print("You've selected 0 or fewer iterations; nothing will happen.")
-    translated_text = asyncio.run(translate_text(inputText, iterations, langCode))
+    if not args.simple:
+        translated_text = asyncio.run(translateText(inputText, iterations, langCode))
+    else:
+        translated_text = asyncio.run(translateTextSimple(inputText, iterations, langCode))
     print("Original text:", inputText)
     print("Translated text:", translated_text)
 
