@@ -1,12 +1,7 @@
-from os import name
+import random, time, os, requests, asyncio, argparse
 from packaging.version import InvalidVersion
-import random
-import time
-import requests
 from googletrans import Translator, LANGUAGES
 from tkinter import Tk
-import asyncio
-import argparse
 from tqdm import tqdm
 
 ver = "0.0.3-alpha.3"
@@ -70,16 +65,15 @@ def random_language_code():
 async def translateText(text, iterations, langCode):
     translator = Translator()
     translated = text
-    for i in range(iterations):
+    for i in tqdm(range(iterations), desc="Translating"):
         try:
             lang_code = random_language_code()
             randomTrans = await translator.translate(translated, dest=lang_code)
             resultTrans = await translator.translate(randomTrans.text, dest=langCode)
             translated = resultTrans.text
-            print(f"Iteration {i + 1}/{iterations}: {translated}")
+            tqdm.write(f"Iteration {i + 1}/{iterations}: {translated}")
         except Exception as e:
-            print(f"Error during translation at iteration {i + 1}: {e}")
-        time.sleep(1)
+            tqdm.write(f"Error during translation at iteration {i + 1}: {e}")
     return translated
 async def translateTextSimple(text, iterations, langCode):
     translator = Translator()
