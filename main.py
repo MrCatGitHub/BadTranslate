@@ -1,4 +1,4 @@
-import random, time, os, requests, asyncio, argparse
+import random, time, os, requests, asyncio, argparse, sys
 from packaging.version import InvalidVersion
 from googletrans import Translator, LANGUAGES
 from tkinter import Tk
@@ -6,7 +6,12 @@ from tqdm import tqdm
 
 ver = "0.0.3-alpha.3"
 exiting = 0
-fallback = "en"
+try:
+    requests.get("http://google.com")
+except requests.RequestException as e:
+    (f"Error {e}: Press enter to exit.")
+    raise SystemExit(1)
+
 
 cli = argparse.ArgumentParser(description="BadTranslate CLI")
 cli.add_argument("-s", "--simple", action="store_true", help="Use the simple mode")
@@ -74,6 +79,7 @@ async def translateText(text, iterations, langCode):
             tqdm.write(f"Iteration {i + 1}/{iterations}: {translated}")
         except Exception as e:
             tqdm.write(f"Error during translation at iteration {i + 1}: {e}")
+            time.sleep(1)
     return translated
 async def translateTextSimple(text, iterations, langCode):
     translator = Translator()
@@ -90,22 +96,21 @@ async def translateTextSimple(text, iterations, langCode):
 def main():
     inputText = input("Enter the text you want to translate: ").strip()
     if not inputText:
-        err1(1)
+        inputText = "null"
     langCode = input("Please select the destination language using short language codes: ").lower().strip()
     if checkLangCode(langCode):
         print(f'Language code "{langCode}" is detected as {LANGUAGES[langCode]}')
     elif langCode == "":
         langCode = "en"
-        print("Set language to english.")
     else:
         print(f'Language code "{langCode}" is not valid.')
-        print('Triggering fallback.')
-        langCode = fallback
+        print('Setting language to english.')
+        langCode = "en"
     if langCode == "0":
         print("no.")
-        langCode = fallback
+        langCode = "en"
     iterations = input("Amount of iterations: (Default: 100) ").strip()
-    if not iterations.strip():
+    if not iterations:
         iterations = 100
     elif iterations.isdigit():
         iterations = int(iterations)
