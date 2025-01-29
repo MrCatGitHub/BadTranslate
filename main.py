@@ -9,7 +9,7 @@ exiting = 0
 try:
     requests.get("http://google.com")
 except requests.RequestException as e:
-    (f"Error {e}: Press enter to exit.")
+    input(f"Error {e}: Press enter to exit.")
     raise SystemExit(1)
 
 
