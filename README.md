@@ -1,5 +1,4 @@
 # BadTranslate
-## WILL NO LONGER BE UPDATED, USE [THIS](https://github.com/MrCatGitHub/BadTranslateRewrite) INSTEAD
 ## Tutorial
 Run it
 
