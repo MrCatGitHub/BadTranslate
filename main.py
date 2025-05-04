@@ -1,10 +1,9 @@
-import random, time, os, requests, asyncio, argparse, sys
+import random, time, os, requests, asyncio, argparse, sys, pyperclip
 from packaging.version import InvalidVersion
 from googletrans import Translator, LANGUAGES
-from tkinter import Tk
 from tqdm import tqdm
 
-ver = "0.0.3-alpha.3"
+ver = "0.0.3-alpha.4"
 exiting = 0
 try:
     requests.get("http://google.com")
@@ -130,12 +129,7 @@ def main():
     print("Original text:", inputText)
     print("Translated text:", translated_text)
 
-    root = Tk()
-    root.withdraw()
-    root.clipboard_clear()
-    root.clipboard_append(translated_text)
-    root.update()
-    root.destroy()
+    pyperclip.copy(translated_text)     
     print("Copied result to clipboard.")
 
 def launcher():
