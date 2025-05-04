@@ -3,7 +3,7 @@ from packaging.version import InvalidVersion
 from googletrans import Translator, LANGUAGES
 from tqdm import tqdm
 
-ver = "0.0.3-alpha.3"
+ver = "0.0.3-alpha.4"
 exiting = 0
 try:
     requests.get("http://google.com")
@@ -129,7 +129,7 @@ def main():
     print("Original text:", inputText)
     print("Translated text:", translated_text)
 
-    pyperclip.copy(translated_text) 
+    pyperclip.copy(translated_text)     
     print("Copied result to clipboard.")
 
 def launcher():
