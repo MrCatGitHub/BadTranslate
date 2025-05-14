@@ -3,15 +3,15 @@ from packaging.version import InvalidVersion
 from googletrans import Translator, LANGUAGES
 from tqdm import tqdm
 
-ver = "0.0.3-alpha.4"
+ver = "0.0.3-alpha.5"
 exiting = 0
 try:
-    requests.get("http://google.com")
+    requests.get("https://mrcat.sh")
 except requests.RequestException as e:
     input(f"Error {e}: Press enter to exit.")
     raise SystemExit(1)
 
-
+#might remove this in the future
 cli = argparse.ArgumentParser(description="BadTranslate CLI")
 cli.add_argument("-s", "--simple", action="store_true", help="Use the simple mode")
 args = cli.parse_args()
@@ -135,7 +135,7 @@ def main():
 def launcher():
     if __name__ == "__main__":
         main()
-        yn = input('Done. Try another word? (y/n) ')
+        yn = input('Done. Try another word? (y/n) ').strip().lower()
         if yn == 'y':
             launcher()
         elif yn == 'n':
